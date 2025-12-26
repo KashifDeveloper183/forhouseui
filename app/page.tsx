@@ -66,24 +66,8 @@ export default function Home() {
       <TopBar />
       <Header />
       <Filter />
+      <PropertyCard/>
 
-      <section className="py-6 sm:py-8 md:py-10 lg:py-12 px-3 sm:px-4 md:px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
-            {dummyProperties.map((property) => (
-              <PropertyCard
-                key={property.id}
-                image={property.image}
-                title={property.title}
-                location={property.location}
-                price={property.price}
-                bedrooms={property.bedrooms}
-                bathrooms={property.bathrooms}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

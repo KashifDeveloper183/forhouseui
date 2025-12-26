@@ -1,37 +1,96 @@
+"use client";
+import { useState, useRef, useEffect } from "react";
+
 export default function Header() {
+  const [countryOpen, setCountryOpen] = useState(false);
+  const [country, setCountry] = useState("UAE");
+
+  const countryRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!countryRef.current?.contains(e.target as Node)) {
+        setCountryOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const countries = [
+    { name: "UAE", flag: "🇦🇪" },
+    { name: "Turkey", flag: "🇹🇷" },
+    { name: "Thailand", flag: "🇹🇭" },
+    { name: "Indonesia", flag: "🇮🇩" },
+  ];
+
   return (
- <header className="bg-white shadow-sm">
+    <header className="bg-white  relative z-40">
       <div className="max-w-[1440px] mx-auto px-3 sm:px-6 md:px-8 lg:px-16 h-14 sm:h-16 lg:h-20 flex items-center justify-between">
 
-        {/* Left: Logo + Country */}
-        <div className="flex items-center gap-2 sm:gap-4 lg:gap-8 flex-shrink-0">
+        {/* LEFT */}
+        <div className="flex items-center gap-4 lg:gap-8">
 
-          {/* Logo */}
-          <span className="text-sm sm:text-base lg:text-xl font-extrabold tracking-tight flex items-center gap-2 flex-shrink-0">
-            <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 133 24" className="w-20 sm:w-28 lg:w-32"><path fillRule="evenodd" d="M0 23.654V.317h5.12v9.45h3.575V.317h5.148v23.337H8.695V13.455H2.008l3.112 1.446v8.753H0zM22.564 24c-1.736 0-3.108-.307-4.119-.922-1.01-.615-1.735-1.498-2.174-2.65-.438-1.153-.658-2.526-.658-4.12V7.634c0-1.613.22-2.987.658-4.12.439-1.133 1.163-1.998 2.174-2.593C19.455.307 20.828 0 22.564 0c1.754 0 3.136.307 4.147.922 1.03.595 1.764 1.46 2.202 2.593.439 1.133.658 2.507.658 4.12v8.672c0 1.595-.22 2.968-.658 4.12-.438 1.153-1.172 2.036-2.202 2.651-1.01.615-2.393.922-4.147.922zm0-3.66c.534 0 .924-.134 1.172-.402.248-.27.41-.615.486-1.038.077-.422.115-.854.115-1.296V6.367a7 7 0 00-.114-1.296c-.077-.423-.239-.768-.487-1.037-.248-.27-.638-.404-1.172-.404-.496 0-.868.135-1.116.404-.248.269-.41.614-.486 1.037a6.975 6.975 0 00-.114 1.296v11.237c0 .442.028.874.085 1.296.077.423.23.769.458 1.038.248.268.639.403 1.173.403zM38.235 24c-1.773 0-3.165-.288-4.175-.864-.992-.596-1.688-1.45-2.088-2.565-.4-1.133-.6-2.516-.6-4.148V.317h5.062V17.2c0 .48.038.96.114 1.44.076.48.238.874.486 1.181.267.308.668.461 1.201.461.553 0 .954-.153 1.202-.46.248-.308.4-.702.457-1.182.077-.48.115-.96.115-1.44V.317h5.09v16.106c0 1.632-.209 3.015-.628 4.148-.4 1.114-1.097 1.97-2.088 2.565-.992.576-2.374.864-4.148.864z" fill="currentColor"></path><path d="M53.138 24c-1.449 0-2.66-.26-3.632-.778-.973-.519-1.707-1.316-2.202-2.391-.496-1.095-.773-2.507-.83-4.236l4.376-.662c.02.999.105 1.805.258 2.42.171.615.4 1.056.686 1.325a1.59 1.59 0 001.087.404c.534 0 .877-.183 1.03-.548.171-.365.257-.749.257-1.152 0-.96-.229-1.767-.687-2.42-.457-.673-1.077-1.345-1.859-2.017l-2.002-1.758a11.676 11.676 0 01-2.23-2.535c-.592-.96-.887-2.142-.887-3.544 0-1.978.581-3.486 1.744-4.523C49.41.528 50.993 0 52.995 0c1.24 0 2.231.211 2.975.634.763.422 1.334.98 1.716 1.67.4.673.667 1.393.8 2.162.153.749.239 1.47.258 2.16l-4.404.548a14.72 14.72 0 00-.144-1.786c-.057-.519-.19-.913-.4-1.182-.21-.288-.534-.432-.972-.432-.477 0-.83.202-1.059.605-.21.404-.314.807-.314 1.21 0 .865.2 1.575.6 2.132.42.538.963 1.105 1.63 1.7l1.917 1.7a12.806 12.806 0 012.546 2.939c.705 1.095 1.058 2.449 1.058 4.062 0 1.095-.248 2.094-.744 2.997a5.455 5.455 0 01-2.116 2.103c-.897.519-1.964.778-3.204.778zm7.1-.346V.317h10.41v3.515h-5.29v5.791h4.032v3.573h-4.033v6.972h5.349v3.486H60.238zm11.504 0L76.118.317h5.835l4.318 23.337h-4.719l-.772-4.927h-3.404l-.8 4.927h-4.834zm6.092-8.01h2.46l-1.23-9.104-1.23 9.105zm9.483 8.01V.317h6.378c1.564 0 2.917.173 4.061.519 1.144.345 2.031.97 2.66 1.872.649.884.973 2.142.973 3.775 0 .96-.077 1.815-.229 2.564a4.812 4.812 0 01-.858 1.959c-.4.538-.982.99-1.745 1.354l3.175 11.294h-5.291l-2.546-10.458h-1.459v10.458h-5.12zm5.12-13.426h1.43c.724 0 1.287-.125 1.687-.374.4-.27.677-.644.83-1.124.171-.5.257-1.095.257-1.786 0-1-.181-1.777-.544-2.334-.362-.557-1.03-.836-2.002-.836h-1.659v6.454zM109.735 24c-1.755 0-3.147-.317-4.176-.95-1.011-.654-1.726-1.557-2.145-2.71-.42-1.17-.63-2.544-.63-4.12V7.809c0-1.614.21-2.996.63-4.149.419-1.172 1.134-2.074 2.145-2.708C106.588.317 107.98 0 109.735 0c1.716 0 3.05.288 4.004.864.972.557 1.659 1.345 2.059 2.363.4 1.018.601 2.19.601 3.515v2.017h-5.006V6.425c0-.461-.028-.903-.085-1.325-.039-.423-.172-.769-.401-1.038-.229-.288-.62-.432-1.172-.432-.534 0-.935.144-1.202.432-.248.289-.41.653-.486 1.095a10.14 10.14 0 00-.086 1.354V17.49c0 .518.038.998.115 1.44.095.423.267.769.514 1.037.267.25.649.375 1.145.375.533 0 .915-.135 1.144-.403.228-.288.371-.653.429-1.095.057-.442.085-.893.085-1.354v-2.45h5.006v2.017c0 1.326-.201 2.517-.601 3.573-.381 1.037-1.058 1.863-2.031 2.478-.953.595-2.297.893-4.032.893zm8.422-.346V.317h5.12v9.45h6.747l-3.172-1.488V.317H132v23.337h-5.148V13.455h-3.575v10.2h-5.12z" fill="currentColor"></path></svg>
+          {/* LOGO */}
+          <span className="font-extrabold text-lg lg:text-xl">
+            HOUSEARCH
           </span>
 
-          {/* Country - Hidden on small mobile */}
-          <div className="hidden sm:flex items-center gap-1 sm:gap-2 font-semibold text-xs sm:text-base cursor-pointer hover:text-gray-600">
-            <span className="hidden md:inline">Country</span>
-            <span className="text-lg sm:text-xl">🇦🇪</span>
-            <span className="font-semibold hidden md:inline">UAE</span>
-            <i className="fas fa-chevron-down text-xs"></i>
+          {/* COUNTRY */}
+          <div ref={countryRef} className="relative hidden sm:block">
+            <button
+              onClick={() => setCountryOpen(!countryOpen)}
+              className="flex items-center gap-2 font-semibold text-sm lg:text-base cursor-pointer"
+            >
+              <span className="hidden md:inline">Country</span>
+              <span className="text-xl">
+                {countries.find(c => c.name === country)?.flag}
+              </span>
+              <span className="hidden md:inline">{country}</span>
+              <i
+                className={`fas fa-chevron-${countryOpen ? "up" : "down"} text-xs`}
+              />
+            </button>
+
+            {/* DROPDOWN */}
+            {countryOpen && (
+              <div className="absolute left-0 mt-3 w-56 bg-white rounded-2xl shadow-xl py-2">
+                {countries.map((c) => (
+                  <button
+                    key={c.name}
+                    onClick={() => {
+                      setCountry(c.name);
+                      setCountryOpen(false);
+                    }}
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-100 text-sm cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">{c.flag}</span>
+                      <span className="font-medium">{c.name}</span>
+                    </div>
+
+                    {country === c.name && (
+                      <i className="fas fa-check text-black text-sm"></i>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
         </div>
 
-        {/* Right Menu - Hidden on small screens, responsive on larger */}
-        <nav className="hidden md:flex items-center gap-3 lg:gap-7 font-semibold text-xs lg:text-base">
-          <a className="hover:text-gray-500 flex items-center gap-1">New buildings</a>
-          <a className="hover:text-gray-500 flex items-center gap-1">Buy</a>
-          <a className="hover:text-gray-500 flex items-center gap-1">Rent</a>
-          <a className="hover:text-gray-500 hidden lg:flex items-center gap-1">Blog</a>
-          <a className="hover:text-gray-500 hidden lg:flex items-center gap-1">Markets</a>
+        {/* RIGHT NAV */}
+        <nav className="hidden md:flex items-center gap-4 lg:gap-7 font-semibold text-sm lg:text-base">
+          <a className="hover:text-gray-500 cursor-pointer">New buildings</a>
+          <a className="hover:text-gray-500 cursor-pointer">Buy</a>
+          <a className="hover:text-gray-500 cursor-pointer">Rent</a>
+          <a className="hover:text-gray-500 hidden lg:block cursor-pointer">Blog</a>
+          <a className="hover:text-gray-500 hidden lg:block cursor-pointer">Markets</a>
         </nav>
 
-        {/* Mobile Menu Icon */}
-        <button className="md:hidden flex items-center justify-center w-8 h-8">
+        {/* MOBILE ICON */}
+        <button className="md:hidden cursor-pointer">
           <i className="fas fa-bars text-lg"></i>
         </button>
 
